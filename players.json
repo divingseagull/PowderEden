@@ -1,0 +1,26 @@
+{
+    "Player1": {
+        "Ships": {
+            "battleship": 0,
+            "destroyer": 0,
+            "cruiser": 0,
+            "frigate": 0
+        }
+    },
+    "Player2": {
+        "Ships": {
+            "battleship": 0,
+            "destroyer": 0,
+            "cruiser": 0,
+            "frigate": 0
+        }
+    },
+    "Player3": {
+        "Ships": {
+            "battleship": 0,
+            "destroyer": 0,
+            "cruiser": 0,
+            "frigate": 0
+        }
+    }
+}
