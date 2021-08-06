@@ -1,5 +1,4 @@
 from discord.ext import commands
-import discord
 
 TOKEN = "ODczMTczODgzMDk0NzEyMzMw.YQ0kjA.vsVGYCXi2aI-rf-Fr2BiEBvZAMQ"
 
