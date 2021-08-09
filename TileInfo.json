@@ -1,18 +1,19 @@
 {
+    "Owner": "",
     "Home": {
         "Ships": {
             "Battleship": 0,
-            "Destroyer": 0,
-            "Cruiser": 0,
-            "Frigate": 0
+            "Destroyer":  0,
+            "Cruiser":    0,
+            "Frigate":    0
         }
     },
     "Enemy": {
         "Ships": {
             "Battleship": 0,
-            "Destroyer": 0,
-            "Cruiser": 0,
-            "Frigate": 0
+            "Destroyer":  0,
+            "Cruiser":    0,
+            "Frigate":    0
         }
     }
 }
