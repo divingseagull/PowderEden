@@ -5,7 +5,7 @@ import os
 
 app = commands.Bot(command_prefix="!")
 
-token = "ODczMTY2MTU5ODIwNzgzNjY2.YQ0dWw.zuqkfUW0tLiKQIdy4w0F26efOSA"
+token = "asdfasdfasdf"
 a = [[0 for i in range(20)] for i in range(20)]
 for filename in os.listdir("Cogs"):
     if filename.endswith(".py"):
