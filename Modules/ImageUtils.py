@@ -29,6 +29,6 @@ def makeGrid(
 
     return draw
 
-img = Image.new("RGB", (99, 99), 'Black')
-makeGrid(img, 99, 99, 99, 99)
+img = Image.new("RGB", (), 'Black')
+makeGrid(img,) 
 img.save(f"{Main.path}/Data/Image/TestImage.png")
