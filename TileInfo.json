@@ -1,26 +1,18 @@
 {
-    "Player1": {
+    "Home": {
         "Ships": {
-            "battleship": 0,
-            "destroyer": 0,
-            "cruiser": 0,
-            "frigate": 0
+            "Battleship": 0,
+            "Destroyer": 0,
+            "Cruiser": 0,
+            "Frigate": 0
         }
     },
-    "Player2": {
+    "Enemy": {
         "Ships": {
-            "battleship": 0,
-            "destroyer": 0,
-            "cruiser": 0,
-            "frigate": 0
-        }
-    },
-    "Player3": {
-        "Ships": {
-            "battleship": 0,
-            "destroyer": 0,
-            "cruiser": 0,
-            "frigate": 0
+            "Battleship": 0,
+            "Destroyer": 0,
+            "Cruiser": 0,
+            "Frigate": 0
         }
     }
 }

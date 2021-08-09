@@ -1,0 +1,1 @@
+class InvalidTileError(Exception): pass

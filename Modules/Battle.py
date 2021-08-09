@@ -1,9 +1,10 @@
 from discord.ext import commands
 import discord
 
-from Utils.JSONUtils import JSONUtils
+from Tile import Tile
 
-class InvalidTileError(Exception): pass
+from Utils.JSONUtils import JSONUtils
+from Utils.Errors import *
 
 class Battle(commands.Cog):
     DAMAGE_PRIORITY = [
@@ -70,22 +71,9 @@ class Battle(commands.Cog):
         if (x or y) not in self.battleQueue:
             raise InvalidTileError("can't find tile from queue")
 
-        tileInfo = None
-        try:
-            tileInfo = JSONUtils.load("Data/Map.json")[x][y]
-        except IndexError:
-            raise InvalidTileError("tile out of range")
-        else:
-            firePowerPlayerRanking = []
-            for player in tileInfo["Players"].keys():
-                firePowerPlayerRanking.append({
-                    f"Player": player, 
-                    "FirePower": self.calculateFirePower(tileInfo["Players"][player]["Ships"])
-                })
+        tile = Tile(x, y)
 
-            firePowerPlayerRanking.sort(key=lambda k: k["FirePower"])
-
-            # TODO: get remain DefensePoint
+        tile.getUnits()
 
 def setup(client):
     client.add_cog(Battle(client))
