@@ -1,5 +1,5 @@
 from discord.ext import commands
-
+import pathlib
 TOKEN = "ODczMTczODgzMDk0NzEyMzMw.YQ0kjA.vsVGYCXi2aI-rf-Fr2BiEBvZAMQ"
 
 modules = [
@@ -15,6 +15,8 @@ client = commands.Bot(
     ],
     # intents=discord.flags.Intents.all()
 )
+
+path = pathlib.Path(__file__).parent.parent
 
 class Core(commands.Cog):
     def __init__(self, client):
