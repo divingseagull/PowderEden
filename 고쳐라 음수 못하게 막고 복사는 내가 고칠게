@@ -1,0 +1,82 @@
+import asyncio
+import discord
+from discord.ext import commands
+from Utills.JSONUtils import JSONUtils
+import os
+import json
+
+modules = []
+app = commands.Bot(command_prefix="!")
+
+token = "ODczMTY2MTU5ODIwNzgzNjY2.YQ0dWw.zuqkfUW0tLiKQIdy4w0F26efOSA"
+a = [['⬛️' for i in range(10)] for i in range(10)]
+
+
+@app.command(name='배치')
+async def roll(ctx, Unit, xt, yt):
+    await ctx.send(f'{xt}x {yt}y에 {Unit}이(가) 배치되었습니다')
+    print(xt,yt)
+    #print(a)
+    x = int(xt)
+    y = int(yt)
+    a[x-1][y-1] = '🚀'
+    for i in range(0,10):
+        for j in range(0,10):
+            print(a[j][i],end= ' ')
+        print()
+    JSONUtils.write("Data/Map.json", object=a)
+    print("배치")
+@app.command(name='생성')
+async def roll(ctx, Unit, Count):
+    await ctx.send(f'{Unit}이(가) {Count}개 생성되었습니다')
+    print("생성")
+@app.command(name='이동')
+async def roll(ctx, Unit, xm, ym, xt, yt):
+    await ctx.send(f'{xt}x {yt}y로 {Unit}이(가) 이동되었습니다')
+    print(xt,yt)
+    print(xm,ym)
+    #print(a)
+    x = int(xt)
+    y = int(yt)
+    xm = int(xm)
+    ym = int(ym)
+    a[xm-1][ym-1] = '⬛️'
+    a[x-1][y-1] = '🚀'
+    for i in range(0,10):
+        for j in range(0,10):
+            print(a[j][i],end= ' ')
+        print()
+    JSONUtils.write("Data/Map.json", object=a)
+    print("이동")
+@app.command(name='맵')
+async def roll(ctx):
+    print("맵")
+    #await ctx.send(f'{str(a).split("], ")}')
+    
+    strmap: str = ""
+
+    for i in a:   
+        for j in i:
+            strmap += str(j)
+        strmap += "\n"
+    await ctx.send(f'{strmap}')
+@app.command(name='ㅆ')
+async def roll(ctx):
+    await ctx.send('ㅂ!')
+    print("ㅆ")
+@app.event
+async def on_ready():
+    print("다음으로 로그인합니다 : ")
+    print(app.user.name)
+    print(app.user.id)
+    print("==========")
+    game = discord.Game(":exploding_head:")
+    await app.change_presence(status=discord.Status.online, activity=game)
+
+if __name__ == "__main__":
+    for module in modules:
+        app.load_extension(module)
+        print(f"Module {module} has been loaded")
+    print("------------------------------")
+
+app.run(token)
