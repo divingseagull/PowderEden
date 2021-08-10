@@ -1,6 +1,5 @@
 from discord.ext import commands
 import pathlib
-TOKEN = "ODczMTczODgzMDk0NzEyMzMw.YQ0kjA.vsVGYCXi2aI-rf-Fr2BiEBvZAMQ"
 
 modules = [
     "Main"
@@ -34,4 +33,6 @@ if __name__ == "__main__":
         client.load_extension(module)
         print(f"Module {module} has been loaded")
     print("------------------------------")
-    client.run(TOKEN)
+    with open(f"{path}/Data/Token/Token.txt") as TF:
+        TOKEN = TF.read()
+        client.run(TOKEN)
