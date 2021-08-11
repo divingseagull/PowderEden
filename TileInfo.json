@@ -1,19 +1,30 @@
 {
-    "Owner": "",
-    "Home": {
-        "Ships": {
-            "Battleship": 0,
-            "Destroyer":  0,
-            "Cruiser":    0,
-            "Frigate":    0
-        }
+    "Resources": {
+        "Iron": 0,
+        "Oil":  0,
+        "Exot": 0
     },
-    "Away": {
-        "Ships": {
-            "Battleship": 0,
-            "Destroyer":  0,
-            "Cruiser":    0,
-            "Frigate":    0
+    "Players": {
+        "Home": {
+            "Username": "",
+            "Ships": {
+                "Battleship": 0,
+                "Destroyer":  0,
+                "Cruiser":    0,
+                "Frigate":    0
+            },
+            "Defenders": {
+                
+            }
+        },
+        "Away": {
+            "Username": "",
+            "Ships": {
+                "Battleship": 0,
+                "Destroyer":  0,
+                "Cruiser":    0,
+                "Frigate":    0
+            }
         }
     }
 }

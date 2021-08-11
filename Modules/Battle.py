@@ -3,7 +3,10 @@ import discord
 
 from Tile import Tile
 
+from Units import *
+
 from Utils.Errors import *
+from Utils.Utils import *
 
 class Battle(commands.Cog):
     def __init__(self, client):
@@ -17,24 +20,7 @@ class Battle(commands.Cog):
             "CRUISER",
             "BATTLESHIP"
         ]
-        # 함선 정보
-        self.shipInfo = {
-            # FIXME: FirePower, DefensePoint ships value
-            "FirePower": {
-                "carrier":    0,
-                "battleship": 0,
-                "destroyer":  0,
-                "cruiser":    0,
-                "frigate":    0
-            },
-            "DefensePoint": {
-                "carrier":    0,
-                "battleship": 0,
-                "destroyer":  0,
-                "cruiser":    0,
-                "frigate":    0
-            }
-        }
+
         # 방어 건물 정보
         # FIXME: DefensePoint.a, b name
         self.defenderInfo = {
@@ -44,27 +30,88 @@ class Battle(commands.Cog):
             }
         }
 
-    def calculateBase(self, baseDict: dict, goalDict: dict) -> int:
-        sum: int = 0
+    def calculateBase(self, baseDict: dict, goalDict: dict, mode=None):
+        """
+        능력치 계산 함수
+
+        :param baseDict: 연산으로 구분된 계산 항목
+
         
-        for goalTuple in goalDict.items():
-            if goalTuple[0] in baseDict.keys():
-                sum += baseDict(goalTuple[0]) * goalTuple[1]
+        {   // 예시
+            calc_mode: {
+                obj: {
+                    const: int or float... numeric
+                }
+            }
+
+            plus: {
+                // 함선1의 화력에 5를 더한다
+                함선1 : {
+                    화력: 5
+                }
+            },
+
+            minus: {...},
+
+            multiply: {
+                // 건물2의 방어력에 1.2를, 내구도에 1.5를 곱한다
+                건물2: {
+                    방어력: 1.2,
+                    내구도: 1.5
+                }
+            },
+
+            divide: {...},
+
+            power: {...}, // 넣지 말까... 
+
+            log: {...} // idk...
+        }
+
+        :param goalDict: 연산을 적용할 항목
+        :param mode: 연산 적용 후 내보낼 mode, None일 경우 dict로 내보냄, "sum"일 경우 합산한 것을 내보냄
+        :return: 적용된 연산을 반환
+        """
         
-        return sum
+        resultDict: dict = {}
+        sumFloat: float = 0
+
+        for calc_mode in baseDict:
+            for obj in baseDict[calc_mode]:
+                for const in baseDict[calc_mode][obj]:
+                    result = calc(recursiveLookup(obj, goalDict, dict)[const], obj[const], calc_mode)
+                    resultDict[calc_mode][obj][const] = result
+                    sum += result
+
+        if mode == "sum":
+            return sumFloat
+        else:
+            return resultDict
 
     def calculateFirePower(self, ships: dict) -> int:
         """
         ships 인자로 들어온 함선의 수 만큼 전투력을 모두 더하여 반환합니다
         """
-        return self.calculateBase(self.shipInfo['FirePower'], ships)
+        shipDict = dict()
+
+        for ship in SHIP_INFO:
+            shipDict['multiply'][ship]['FirePower'] = ship['FirePower']
+
+        return self.calculateBase(shipDict, ships, 'sum')
     
     def calculateDefensePoint(self, ships: dict, buildings: dict) -> int:
         """
         `ships` 인자로 들어온 함선의 수와 해당 타일의 방어 건물만큼 방어력을 모두 더하여 반환합니다
         """
-        return self.calculateBase(self.shipInfo['DefensePoint'], ships) + \
-               self.calculateBase(self.defenderInfo['DefensePoint'], buildings)
+
+        defenceDict = dict()
+
+        for ship in SHIP_INFO:
+            shipDict['multiply'][ship]['DefensePoint'] = ship['DefensePoint']
+
+        # TODO: 방어 건물 dict도 baseDict에 추가
+
+        return self.calculateBase(defenceDict, [ships, buildings], 'sum')
 
     def startBattle(self, x: int, y: int) -> None:
         """
@@ -87,8 +134,9 @@ class Battle(commands.Cog):
             Tile.replaceOwner()
             
             for shipType in self.damagePriority:
-                if shipType == 0: continue
+                if units["Away"][shipType] == 0: continue # if ship count is 0: continue
                 (self.calculateFirePower(units["Away"]) - units["Away"]["Frigate"]) / units["Away"][shipType]
+                #                            (firepower, 0!! - frigates count, 0?) / get other ship count, 0?
 
 def setup(client):
     client.add_cog(Battle(client))

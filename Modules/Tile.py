@@ -20,7 +20,7 @@ class Tile:
             for j in range(0, self.y):
                 pass
         
-    def currentMap(self) -> dict:
+    def getMap(self) -> dict:
         try:
             self._map = JSONUtils.load("Data/Map.json")
             self._map[self.x][self.y]
@@ -29,21 +29,25 @@ class Tile:
         else:
             return self._map[self.x][self.y]
 
+    def _updateMap(self, object: Union[dict, list]):
+        pass
+
     def getOwner(self) -> str:
-        return self.currentMap()["Owner"]
+        return self.getMap()["Players"]["Home"]["Username"]
 
     def getUnits(self) -> dict:
         return { 
-            "Home": self.currentMap()["Home"], 
-            "Away": self.currentMap()["Away"]
+            "Home": self.getMap()["Players"]["Home"]["Ships"], 
+            "Away": self.getMap()["Players"]["Away"]["Ships"]
         }
 
     def getBuildings(self) -> dict:
         pass
 
     def replaceOwner(self) -> None:
-        tileData = JSONUtils.load("Data/Map.json")
-        tileData[self.x][self.y][]
+        tmpData = self.getMap()
+        tmpData["Home"]["Username"] = tmpData["Away"]["Username"]
+        self._updateMap(tmpData)
 
     def deployUnits(self) -> None:
         pass
