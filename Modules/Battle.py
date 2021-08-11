@@ -92,10 +92,15 @@ class Battle(commands.Cog):
         """
         ships 인자로 들어온 함선의 수 만큼 전투력을 모두 더하여 반환합니다
         """
-        shipDict = dict()
+        shipDict: dict = {
+            'multiply': {
+            }
+        }
 
         for ship in SHIP_INFO:
-            shipDict['multiply'][ship]['FirePower'] = ship['FirePower']
+            shipDict['multiply'][ship] = {
+                'FirePower': ship['FirePower']
+            }
 
         return self.calculateBase(shipDict, ships, 'sum')
     
@@ -104,10 +109,15 @@ class Battle(commands.Cog):
         `ships` 인자로 들어온 함선의 수와 해당 타일의 방어 건물만큼 방어력을 모두 더하여 반환합니다
         """
 
-        defenceDict = dict()
+        defenceDict: dict = {
+            'multiply': {
+            }
+        }
 
         for ship in SHIP_INFO:
-            shipDict['multiply'][ship]['DefensePoint'] = ship['DefensePoint']
+            defenceDict['multiply'][ship] = {
+                'DefensePoint': ship['DefensePoint']
+            }
 
         # TODO: 방어 건물 dict도 baseDict에 추가
 
