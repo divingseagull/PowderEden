@@ -79,8 +79,12 @@ class Battle(commands.Cog):
         for calc_mode in baseDict:
             for obj in baseDict[calc_mode]:
                 for const in baseDict[calc_mode][obj]:
-                    result = calc(recursiveLookup(obj, goalDict, dict)[const], obj[const], calc_mode)
-                    resultDict[calc_mode][obj][const] = result
+                    result = calc(recursiveLookup(obj, goalDict, dict)[const], baseDict[calc_mode][obj][const], calc_mode)
+                    resultDict[calc_mode] = {
+                        obj: {
+                            const: result
+                        }
+                    }
                     sum += result
 
         if mode == "sum":
