@@ -48,10 +48,3 @@ def calc(a, b, mode):
     }
 
     return calcDict[mode](a, b)
-
-
-
-
-
-
-

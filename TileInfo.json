@@ -13,8 +13,10 @@
                 "Cruiser":    0,
                 "Frigate":    0
             },
-            "Defenders": {
-                
+            "Buildings": {
+                "Defender": {
+                    
+                }
             }
         },
         "Away": {

@@ -1,0 +1,50 @@
+{
+    "Scout": {
+        "Firepower": 0,
+        "HealthPoint": 3,
+        "Cost": {
+            "Iron": 4,
+            "Oil": 1
+        }  
+    },
+    "Frigate": {
+        "Firepower": 1,
+        "HealthPoint": 10,
+        "Cost": {
+            "Iron": 15,
+            "Oil": 5
+        }
+    },
+    "Destroyer": {
+        "Firepower": 5,
+        "HealthPoint": 30,
+        "Cost": {
+            "Iron": 60,
+            "Oil": 20
+        }
+    },
+    "Cruiser": {
+        "Firepower": 25,
+        "HealthPoint": 90,
+        "Cost": {
+            "Iron": 240,
+            "Exot": 5
+        }
+    },
+    "Battleship": {
+        "Firepower": 125,
+        "HealthPoint": 270,
+        "Cost": {
+            "Iron": 960,
+            "Exot": 20
+        }
+    },
+    "Carrier": {
+        "Firepower": 600,
+        "HealthPoint": 1100,
+        "Cost": {
+            "Iron": 3840,
+            "Exot": 80
+        }
+    }
+}

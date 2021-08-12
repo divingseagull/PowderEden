@@ -1,6 +1,10 @@
-import os
-import pathlib
+class a:
+    def __init__(self):
+        self.q = 1
 
-print(pathlib.Path(__file__))
-print(pathlib.Path(__file__).parent)
-print(pathlib.Path(__file__).parent.parent)
+class b(a):
+    def __init__(self):
+        super().__init__()
+        super().q = 3
+        print(super().q)
+        print(self.q)

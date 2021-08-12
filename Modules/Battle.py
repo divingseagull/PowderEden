@@ -1,5 +1,6 @@
 from discord.ext import commands
 import discord
+import math
 
 from Tile import Tile
 
@@ -15,6 +16,7 @@ class Battle(commands.Cog):
         self.battleQueue = [ ]
         # 피해 우선순위
         self.damagePriority = [
+            "SCOUT",
             "FRIGATE",
             "DESTROYER",
             "CRUISER",
@@ -80,8 +82,12 @@ class Battle(commands.Cog):
             for obj in baseDict[calc_mode]:
                 for const in baseDict[calc_mode][obj]:
                     result = calc(recursiveLookup(obj, goalDict, dict)[const], obj[const], calc_mode)
-                    resultDict[calc_mode][obj][const] = result
-                    sum += result
+                    resultDict[calc_mode] = {
+                        obj: {
+                            const: result
+                        }
+                    }
+                    sumFloat += result
 
         if mode == "sum":
             return sumFloat
@@ -89,25 +95,37 @@ class Battle(commands.Cog):
             return resultDict
 
     def calculateFirePower(self, ships: dict) -> int:
+        # FIXME: SHIP_INFO 
         """
         ships 인자로 들어온 함선의 수 만큼 전투력을 모두 더하여 반환합니다
         """
-        shipDict = dict()
+        shipDict: dict = {
+            'multiply': {
+            }
+        }
 
         for ship in SHIP_INFO:
-            shipDict['multiply'][ship]['FirePower'] = ship['FirePower']
+            shipDict['multiply'][ship] = {
+                'FirePower': ship['FirePower']
+            }
 
         return self.calculateBase(shipDict, ships, 'sum')
     
     def calculateDefensePoint(self, ships: dict, buildings: dict) -> int:
+        # FIXME: SHIP_INFO
         """
         `ships` 인자로 들어온 함선의 수와 해당 타일의 방어 건물만큼 방어력을 모두 더하여 반환합니다
         """
 
-        defenceDict = dict()
+        defenceDict: dict = {
+            'multiply': {
+            }
+        }
 
         for ship in SHIP_INFO:
-            shipDict['multiply'][ship]['DefensePoint'] = ship['DefensePoint']
+            defenceDict['multiply'][ship] = {
+                'DefensePoint': ship['DefensePoint']
+            }
 
         # TODO: 방어 건물 dict도 baseDict에 추가
 
@@ -122,21 +140,21 @@ class Battle(commands.Cog):
         # 호위함들 전체 체력보다 피해량이 더 높다면, (피해량 - 호위함 전체 체력) / (구축함 수)
 
         if (x or y) not in self.battleQueue:
-            raise InvalidTileError("can't find tile from queue")
+            raise InvalidTileError("can't find tile from battle queue")
 
         tile  = Tile(x, y)
         units = tile.getUnits()
 
+        damageResult: int = 0
         battleResult = self.calculateFirePower(units["Home"]) - \
-                       self.calculateDefensePoint(units["Away"])
+                       self.calculateDefensePoint(units["Away"], tile.getBuildings()["Defense"])
+        
+        if battleResult < 0: Tile.replaceOwner()
 
-        if battleResult < 0:
-            Tile.replaceOwner()
-            
-            for shipType in self.damagePriority:
-                if units["Away"][shipType] == 0: continue # if ship count is 0: continue
-                (self.calculateFirePower(units["Away"]) - units["Away"]["Frigate"]) / units["Away"][shipType]
-                #                            (firepower, 0!! - frigates count, 0?) / get other ship count, 0?
+        for shipType in self.damagePriority:
+            if units["Away"][shipType] == 0: continue # if ship count is 0: continue
+            damageResult += math.floor((self.calculateDefensePoint(units["Home"], tile.getBuildings()["Defense"]) - \
+                units["Away"]["Frigate"]) / units["Away"][shipType])     
 
 def setup(client):
     client.add_cog(Battle(client))
