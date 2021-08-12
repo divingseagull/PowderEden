@@ -33,7 +33,7 @@ class Map: # 수정 예정
 
         for kx in range(x):
             for ky in range(y):
-                self.map_index[(x, y)] = {
+                self.map_index[(kx, ky)] = {
                     "owner": {
                         # 소유자
                     },
