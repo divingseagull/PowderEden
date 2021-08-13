@@ -7,10 +7,10 @@ import json
 import os
 import shutil
 
-import ..Utils import JSONUtils
+from Utils.JSONUtils import *
 from . import Main
 
-class Game(commands.Cog):
+class Bot(commands.Cog):
     def __init__(self, client):
         self.client: commands.Bot = client
 
@@ -45,7 +45,7 @@ class Game(commands.Cog):
                     config["Players"].update(
                         {
                             f"Player{players.index(p)}": {
-                                "ID": p.id
+                                "ID": p.id,
                                 "Resources": { # FIXME
                                     "Oil": 0, 
                                     "Iron": 0,

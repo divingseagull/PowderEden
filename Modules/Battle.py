@@ -2,9 +2,9 @@ from discord.ext import commands
 import discord
 import math
 
-from Tile import Tile
+from Map import Tile
 
-from Units import *
+from Entity import *
 
 from Utils.Errors import *
 from Utils.Utils import *
@@ -21,16 +21,7 @@ class Battle(commands.Cog):
             "DESTROYER",
             "CRUISER",
             "BATTLESHIP"
-        ]
-
-        # 방어 건물 정보
-        # FIXME: DefensePoint.a, b name
-        self.defenderInfo = {
-            "DefensePoint": {
-                "a": 0,
-                "b": 0
-            }
-        }
+        ] 
 
     def calculateBase(self, baseDict: dict, goalDict: dict, mode=None):
         """
@@ -153,8 +144,10 @@ class Battle(commands.Cog):
 
         for shipType in self.damagePriority:
             if units["Away"][shipType] == 0: continue # if ship count is 0: continue
-            damageResult += math.floor((self.calculateDefensePoint(units["Home"], tile.getBuildings()["Defense"]) - \
-                units["Away"]["Frigate"]) / units["Away"][shipType])     
+            # test code                           dp  - units count
+            damageResult += math.floor(
+                self.calculateDefensePoint(units["Home"], tile.getBuildings()["Defense"]) - \
+                self.calculateDefensePoint(units["Away"][shipType]) / units["Away"][shipType])
 
 def setup(client):
     client.add_cog(Battle(client))

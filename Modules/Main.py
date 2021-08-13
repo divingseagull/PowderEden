@@ -1,8 +1,13 @@
 import discord
 from discord.ext import commands
+import pathlib
+import sys
+
+sys.path.append(pathlib.Path(__file__.replace("Modules/Main.py", "Utils")))
 
 modules = [
-    "Main"
+    "Main",
+    "Bot"
 ]
 
 client = commands.Bot(

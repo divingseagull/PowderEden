@@ -31,6 +31,9 @@ def recursiveLookup(k, d, t=None):
     return None
 
 def calc(a, b, mode): 
+    """
+    mode에 따라 사칙연산된 값을 반환
+    """
 
     def plus_cal(a, b): return a + b
 

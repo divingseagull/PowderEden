@@ -1,0 +1,68 @@
+// this is tile info sample.
+{
+    "Owner": "", // 소유자
+    "Players": { // 현재 타일에 있는 Entity의 주인들
+        "nature": { // 자연적으로 생성된 개체 (주인이 없는 개체들/중립 몹?)
+            "Entity": {
+                // (x, y)에 있는 개체
+            }
+        },
+        "player1": { // key: discord UID
+            "Entity": {
+                // (x, y)에 있는 개체
+            },
+            "Building": {
+                // (x, y)에 있는 건물
+            },
+            "Ship": {
+                // (x, y)에 있는 함선
+            }
+
+        }
+    },
+
+    "Type": {
+        // 타일의 타입 (땅/바다/...다른 여러가지 속성들...)
+    },
+
+    "Shape": "", // 타일의 모양
+
+    "Resource": { 
+        // (x, y)에 있는 천연/합성 자원
+        "Iron": 0,
+        "Oil":  0,
+        "Exot": 0
+    }
+}
+
+// {
+//     "Resources": {
+//         "Iron": 0,
+//         "Oil":  0,
+//         "Exot": 0
+//     },
+//     "Players": {
+//         "Home": {
+//             "Username": "",
+//             "Ships": {
+//                 "Battleship": 0,
+//                 "Destroyer":  0,
+//                 "Cruiser":    0,
+//                 "Frigate":    0
+//             },
+//             "Buildings": {
+//                 "Defender": {
+//                 }
+//             }
+//         },
+//         "Away": {
+//             "Username": "",
+//             "Ships": {
+//                 "Battleship": 0,
+//                 "Destroyer":  0,
+//                 "Cruiser":    0,
+//                 "Frigate":    0
+//             }
+//         }
+//     }
+// }
