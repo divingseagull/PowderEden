@@ -55,33 +55,58 @@ async def set(ctx, Unit: str, xt:int, yt:int):
         y = int(yt)
         b[x-1][y-1] = 0
         await ctx.send('올바른값을 입력하세요')
+@app.command(name='이동')
+async def moove(ctx, Unit:str, xm:int, ym:int, x:int, y:int):
+    #await ctx.send(f'{x}x {y}y로 {Unit} 이(가) 이동되었습니다')
+    if x > 0 or y > 0 and xm > 0 or ym > 0 and Unit in UnitList:
+        
+        
+        
+
+        print(x,y)
+        print(xm,ym)
+        #print(a)
+        x = int(x)
+        y = int(y)
+        xm = int(xm)
+        ym = int(ym)
+        a[xm-1][ym-1] = '☐ '
+        a[x-1][y-1] = '■ '
+        if Unit == '호위함':
+            b[x-1][y-1] = 1
+            a[x-1][y-1] = 1 
+            await ctx.send(f'{x}x {y}y로 {Unit} 이(가) 이동되었습니다')
+        if Unit == '구축함':
+            b[x-1][y-1] = 2
+            a[x-1][y-1] = 2 
+            await ctx.send(f'{x}x {y}y로 {Unit} 이(가) 이동되었습니다')
+        if Unit == '순양함':
+            b[x-1][y-1] = 3
+            a[x-1][y-1] = 3 
+            await ctx.send(f'{x}x {y}y로 {Unit} 이(가) 이동되었습니다')
+        if Unit == '전함':
+            b[x-1][y-1] = 4
+            a[x-1][y-1] = 4 
+            await ctx.send(f'{x}x {y}y로 {Unit} 이(가) 이동되었습니다')
+        else:
+            b[x-1][y-1] = 0
+            a[x-1][y-1] = '☐ '
+            print("fail")
+            await ctx.send('올바른값을 입력하세요')
+            
+        
+        JSONUtils.write("Data/Map.json", object=b)
+        print("배치")
+    else:
+        x = int(x)
+        y = int(y)
+        b[x-1][y-1] = 0
+        await ctx.send('올바른값을 입력하세요')
 @app.command(name='생성')
 async def create(ctx, Unit, Count):
     await ctx.send(f'{Unit}이(가) {Count}개 생성되었습니다')
     print("생성")
-@app.command(name='이동')
-async def moove(ctx, Unit, xm, ym, x, y):
-    await ctx.send(f'{x}x {y}y로 {Unit} 이(가) 이동되었습니다')
-    print(x,y)
-    print(xm,ym)
-    #print(a)
-    x = int(x)
-    y = int(y)
-    xm = int(xm)
-    ym = int(ym)
-    a[xm-1][ym-1] = '☐ '
-    a[x-1][y-1] = '■ '
 
-    b[xm-1][ym-1] = 0 
-    b[x-1][y-1] = 1 
-    for i in range(0,30):
-        for j in range(0,20):
-            print(a[j][i],end= ' ')
-        print()
-
-        print()    
-    JSONUtils.write("Data/Map.json", object=b)
-    print("이동")
 @app.command(name='맵')
 async def map(ctx):
     print("맵")
