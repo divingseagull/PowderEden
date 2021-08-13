@@ -8,7 +8,7 @@ import json
 modules = []
 app = commands.Bot(command_prefix="!")
 
-token = "ODczMTY2MTU5ODIwNzgzNjY2.YQ0dWw.zuqkfUW0tLiKQIdy4w0F26efOSA"
+token = "TOKEN"
 a = [['☐ ' for i in range(30)] for i in range(20)]
 b = [['0 ' for i in range(30)] for i in range(20)]
 UnitList = ['호위함','구축함','순양함','전함']
