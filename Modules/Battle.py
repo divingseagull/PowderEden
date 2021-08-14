@@ -2,12 +2,13 @@ from discord.ext import commands
 import discord
 import math
 
-from Map import Tile
+from Modules.Map import Tile
 
-from Entity import *
+from Modules.Entity import *
 
 from Utils.Errors import *
 from Utils.Utils import *
+
 
 class Battle(commands.Cog):
     def __init__(self, client):

@@ -19,7 +19,7 @@ class Bot(commands.Cog):
             shutil.rmtree(f"{Main.path}/Data/Guild/{guildID}", True)
 
         shutil.copytree(f"{Main.path}/Data/Base", f"{Main.path}/Data/Guild")
-        os.rename(f"{Main.path}/Data/Guild/Base", f"{Main.path}/Data/Guild/{guildID}")    
+        os.rename(f"{Main.path}/Data/Guild/Base", f"{Main.path}/Data/Guild/{guildID}")
 
     @commands.command(name="게임시작")
     async def startGame(self, ctx: Context, *players: discord.User):
@@ -39,13 +39,17 @@ class Bot(commands.Cog):
             with open(f"{Main.path}/Data/Guild/TestGuild/Config.json", 'w') as configFile:
                 config: dict = {
                     "MapSize": [0, 0], # SizeX, SizeY FIXME: Map size cannot be (0, 0).
-                    "Players": { }
+                    "Players": { },
+                    "Rule":{
+                        "Timer": 24 # (H)
+                    }
                 }
                 for p in players:
                     config["Players"].update(
                         {
                             f"Player{players.index(p)}": {
                                 "ID": p.id,
+                                "EndedTurn": False,
                                 "Resources": { # FIXME
                                     "Oil": 0, 
                                     "Iron": 0,
