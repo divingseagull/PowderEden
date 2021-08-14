@@ -94,7 +94,7 @@ class Map:
 
         잠정적인 최대 크기:
         (80 x 80, 0.5)
-        (100 x 100, 0.725)
+        (100 x 100, 0.8)
 
         넓고 보기 좋지만 시간이 많이 걸림:
         (200 x 200, 1)  - 40초 ~ 1분 정도
@@ -135,6 +135,7 @@ class Map:
             rand_xy_set.add((random.randrange(sx), random.randrange(sy)))
 
         xy_list = list(rand_xy_set)
+        rand_dir_seed = int(map_size ** (1 / 5))
 
         for i in range(int((map_size ** (1 / 6)) / divergence)):
             xy_set = set()
@@ -184,11 +185,11 @@ class Map:
 
                 # 배경 1단위에서 뻗어나가는 무작위 길이의 배경으로 이루어진 선 / rand_dir=True 에서 작동
                 if bool(random.getrandbits(1)) and rand_dir:
-                    rand_seed = random.choice(range(int(map_size ** (1/5)) - random.choice([0, 1])))
+                    rand_seed = random.choice(range(rand_dir_seed - random.choice([0, 1])))
                     rand_num = random.choice(range(8))
 
-                    for n in range(rand_seed):
-                        xy_set.add(rand_direction(xy, n, rand_num))
+                    for d in range(rand_seed):
+                        xy_set.add(rand_direction(xy, d, rand_num))
 
             xy_list = list(xy_set)
 
@@ -209,18 +210,30 @@ class Map:
 
             # 배경에서 고립된 작은 조각 제거
             for xy in empt_dict:
-                if empt_dict[xy] > 3:
+                if empt_dict[xy] > 1:
                     xy_list.append(xy)
 
-        r_t_list = list()
+        r_t_set = set()
 
         # 배경 좌표가 맵 크기를 벗어나지 않는지 확인
         for xy in xy_list:
             xy: tuple
-            if 0 <= xy[0] < sx and 0 <= xy[1] < sy:
-                r_t_list.append(xy)
 
-        return r_t_list
+            if sx <= xy[0]:
+                xy = (xy[0] - sx, xy[1])
+
+            if sy <= xy[1]:
+                xy = (xy[0], xy[1] - sy)
+
+            if -sx <= xy[0] < 0:
+                xy = (xy[0] + sx, xy[1])
+
+            if -sy <= xy[1] < 0:
+                xy = (xy[0], xy[1] + sy)
+
+            r_t_set.add(xy)
+
+        return list(r_t_set)
 
     def map_view(self):
         """
