@@ -2,7 +2,7 @@ import math
 import uuid
 
 from typing import Optional
-from .Map import Map
+from Modules.Map import Map
 
 from Utils.Errors import *
 

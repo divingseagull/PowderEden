@@ -7,7 +7,8 @@ import json
 import os
 import shutil
 
-import ..Utils import JSONUtils
+
+from Utils.JSONUtils import JSONUtils
 from . import Main
 
 class Game(commands.Cog):
@@ -45,7 +46,7 @@ class Game(commands.Cog):
                     config["Players"].update(
                         {
                             f"Player{players.index(p)}": {
-                                "ID": p.id
+                                "ID": p.id,
                                 "Resources": { # FIXME
                                     "Oil": 0, 
                                     "Iron": 0,
@@ -57,4 +58,4 @@ class Game(commands.Cog):
                 json.dump(config, configFile, indent=4)
 
 def setup(client):
-    client.add_cog(Bot(client))
+    client.add_cog(Game(client))
