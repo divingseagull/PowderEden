@@ -86,7 +86,7 @@ class Map:
 
         return result
     
-    def make_chunks(self, divergence=0.72, smooth_val=3, rand_dir=True, fill_empty=True):
+    def make_chunks(self, divergence=0.72, smooth_val=2, rand_dir=True, fill_empty=True):
         """
         바다(배경) 속성을 가진 타일의 좌표를 생성함
 
