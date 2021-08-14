@@ -25,4 +25,3 @@ def make_map_image(size, background, pixels: dict):
             img.putpixel(xy, rgb)
 
     return img
-
