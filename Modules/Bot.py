@@ -7,7 +7,6 @@ import json
 import os
 import shutil
 
-
 from Utils.JSONUtils import JSONUtils
 from . import Main
 
