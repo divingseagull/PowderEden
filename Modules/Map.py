@@ -86,7 +86,7 @@ class Map:
 
         return result
     
-    def make_chunks(self, divergence=0.72, rand_dir=True, fill_empty=True):
+    def make_chunks(self, divergence=0.72, smooth_val=3, rand_dir=True, fill_empty=True):
         """
         바다(배경) 속성을 가진 타일의 좌표를 생성함
 
@@ -210,7 +210,7 @@ class Map:
 
             # 배경에서 고립된 작은 조각 제거
             for xy in empt_dict:
-                if empt_dict[xy] > 1:
+                if empt_dict[xy] >= smooth_val:
                     xy_list.append(xy)
 
         r_t_set = set()
