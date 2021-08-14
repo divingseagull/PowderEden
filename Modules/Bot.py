@@ -7,7 +7,7 @@ import json
 import os
 import shutil
 
-import ..Utils import JSONUtils
+import Utils.JSONUtils import *
 from . import Main
 
 class Game(commands.Cog):
@@ -45,7 +45,7 @@ class Game(commands.Cog):
                     config["Players"].update(
                         {
                             f"Player{players.index(p)}": {
-                                "ID": p.id
+                                "ID": p.id,
                                 "Resources": { # FIXME
                                     "Oil": 0, 
                                     "Iron": 0,
