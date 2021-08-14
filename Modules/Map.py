@@ -15,7 +15,8 @@ from Utils.Utils import *
 # => map_index를 NoSQL처럼 만들기
 # 👍
 
-class Map: # 수정 예정
+
+class Map:
     def __init__(self, x, y, groundShape="■", backgroundShape="□"):
 
         # 맵의 저장 경로
@@ -33,7 +34,7 @@ class Map: # 수정 예정
         # Map의 실질적인 정보
         self.map_index = dict()
 
-    def map_init(self, x, y, groundShape, backgroundShape):
+    def map_init(self, x, y):
         """
         Map의 겉모습 및 map_index 생성
 
@@ -70,7 +71,7 @@ class Map: # 수정 예정
                 }
 
         for i in range(y):
-            sub.append(groundShape)
+            sub.append(self.groundShape)
 
         for i in range(x):
             result.append(sub[:])
@@ -85,11 +86,15 @@ class Map: # 수정 예정
 
         return result
     
-    def make_chunks(self, divergence=0.72):
+    def make_chunks(self, divergence=0.72, rand_dir=True, fill_empty=True):
         """
         바다(배경) 속성을 가진 타일의 좌표를 생성함
 
         :divergence: 분산도(값이 커질 수록 땅이 조각조각 남)
+
+        잠정적인 최대 크기:
+        (80 x 80, 0.5)
+        (100 x 100, 0.725)
         """
 
         def rand_direction(xy, i, ind):
@@ -174,8 +179,8 @@ class Map: # 수정 예정
                     if bool(random.getrandbits(1)):
                         xy_set.add((xy[0] - 1, xy[1] - 1))
 
-                # 배경 1단위에서 뻗어나가는 무작위 길이의 배경으로 이루어진 선
-                if bool(random.getrandbits(1)):
+                # 배경 1단위에서 뻗어나가는 무작위 길이의 배경으로 이루어진 선 / rand_dir=True 에서 작동
+                if bool(random.getrandbits(1)) and rand_dir:
                     rand_seed = random.choice(range(int(map_size ** (1/5)) - random.choice([0, 1])))
                     rand_num = random.choice(range(8))
 
@@ -184,23 +189,25 @@ class Map: # 수정 예정
 
             xy_list = list(xy_set)
 
-        # 배경에서 고립된 작은 섬들이 얼마나 고립되었는지 기록
-        empt_dict = dict()
-        for xy in xy_list:
-            for i in range(8):
-                empt_pix = rand_direction(xy, 1, i)
-                if empt_pix in xy_list:
-                    continue
-                else:
-                    if empt_pix in empt_dict:
-                        empt_dict[empt_pix] += 1
+        # 부드럽게 만들기 : fill_empty=True 에서 작동
+        if fill_empty:
+            # 배경에서 고립된 작은 조각들이 얼마나 고립되었는지 기록
+            empt_dict = dict()
+            for xy in xy_list:
+                for i in range(8):
+                    empt_pix = rand_direction(xy, 1, i)
+                    if empt_pix in xy_list:
+                        continue
                     else:
-                        empt_dict[empt_pix] = 1
+                        if empt_pix in empt_dict:
+                            empt_dict[empt_pix] += 1
+                        else:
+                            empt_dict[empt_pix] = 1
 
-        # 배경에서 고립된 작은 섬 제거
-        for xy in empt_dict:
-            if empt_dict[xy] > 3:
-                xy_list.append(xy)
+            # 배경에서 고립된 작은 조각 제거
+            for xy in empt_dict:
+                if empt_dict[xy] > 3:
+                    xy_list.append(xy)
 
         r_t_list = list()
 

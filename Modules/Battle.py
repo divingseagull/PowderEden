@@ -9,6 +9,7 @@ from Modules.Entity import *
 from Utils.Errors import *
 from Utils.Utils import *
 
+
 class Battle(commands.Cog):
     def __init__(self, client):
         self.client: commands.Bot = client
