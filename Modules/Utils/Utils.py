@@ -58,7 +58,15 @@ def calc(a, b, mode):
     return calcDict[mode](a, b)
 
 
-def path_finding(map_instance, obstacle_type, start, end):
+def distance(xy1, xy2):
+    """
+    :return: xy1, xy2간 거리를 반환함
+    """
+
+    return ((xy1[0] - xy2[0]) ** 2 + (xy1[1] - xy2[1]) ** 2) ** (1 / 2)
+
+
+def path_finding(map_instance, obstacle_type: list, start, end):
     """
     :requirements: pathfinding
 
@@ -76,8 +84,9 @@ def path_finding(map_instance, obstacle_type, start, end):
 
     # 장애물 좌표에서 1을 0으로 교체
     for xy in mi:
-        if mi(xy)["Type"] in obstacle_type:
-            map_data[xy[1]][xy[0]] = 0
+        for obs in obstacle_type:
+            if obs in mi(xy)["Type"].keys():
+                map_data[xy[1]][xy[0]] = 0
 
     grid = Grid(matrix=map_data)
     finder = BiAStarFinder()
