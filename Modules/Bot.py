@@ -7,8 +7,7 @@ import json
 import os
 import shutil
 
-from Utils.JSONUtils import JSONUtils
-from . import Main
+import Main
 
 class Game(commands.Cog):
     def __init__(self, client):

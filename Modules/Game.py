@@ -18,7 +18,7 @@ class Bot(commands.Cog):
         if os.path.exists(f"{Main.path}/Data/Guild/{guildID}"):
             shutil.rmtree(f"{Main.path}/Data/Guild/{guildID}", True)
 
-        shutil.copytree(f"{Main.path}/Data/Base", f"{Main.path}/Data/Guild")
+        shutil.copytree(f"{Main.path}/Data/Base", f"{Main.path}/Data/Guild") # FIXME
         os.rename(f"{Main.path}/Data/Guild/Base", f"{Main.path}/Data/Guild/{guildID}")
 
     @commands.command(name="게임시작")
