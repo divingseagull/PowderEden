@@ -85,7 +85,7 @@ def path_finding(map_instance, obstacle_type: list, start, end):
     # 장애물 좌표에서 1을 0으로 교체
     for xy in mi:
         for obs in obstacle_type:
-            if obs in mi(xy)["Type"].keys():
+            if obs in mi(xy)["Type"]:
                 map_data[xy[1]][xy[0]] = 0
 
     grid = Grid(matrix=map_data)

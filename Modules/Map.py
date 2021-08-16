@@ -15,7 +15,7 @@ from .Utils.Utils import *
 
 
 class Map:
-    def __init__(self, x, y, groundShape="■", backgroundShape="□"):
+    def __init__(self, xy, groundShape="■", backgroundShape="□"):
 
         # 맵의 저장 경로
         self.dump_path = "Data/Map.json"
@@ -27,24 +27,21 @@ class Map:
         self.backgroundShape = backgroundShape
 
         # 맵의 크기
-        self.map_border = (x, y)
+        self.map_border = (xy[0], xy[1])
 
         # Map의 실질적인 정보
         self.map_index = dict()
 
-    def map_init(self, x, y):
+    def map_init(self, xy):
         """
-        Map의 겉모습 및 map_index 생성
+        map_index 생성
 
-        :x, y: 맵의 가로, 세로
+        :xy: 맵의 가로, 세로 = (x, y)
         make_chunks를 호출하여 바다(배경) 타일을 생성함 - 긴 시간이 소요됨
         """
 
-        sub    = list()
-        result = list()
-
-        for kx in range(x):
-            for ky in range(y):
+        for kx in range(xy[0]):
+            for ky in range(xy[1]):
                 self.map_index[(kx, ky)] = {
                     "Owner": "", # 소유자
                     "Players": { # 현재 타일에 있는 Entity의 주인들
@@ -55,9 +52,7 @@ class Map:
                         }
                     },
 
-                    "Type": {
-                        # 타일의 타입 (땅/바다/...다른 여러가지 속성들...)
-                    },
+                    "Type": set(), # 타일의 타입 (땅/바다/...다른 여러가지 속성들...)
 
                     "Shape": "", # 타일의 모양
 
@@ -68,21 +63,11 @@ class Map:
                     }
                 }
 
-        for i in range(y):
-            sub.append(self.groundShape)
-
-        for i in range(x):
-            result.append(sub[:])
-        
         # 바다(배경) 타일 생성
         xy_tuple_list = self.make_chunks()
         for xy in xy_tuple_list:
             self.map_index[xy]["Shape"] = self.backgroundShape
-            self.map_index[xy]["type"] = {
-                'sea': True
-            }
-
-        return result
+            self.map_index[xy]["Type"].add("sea")
     
     def make_chunks(self, divergence=0.72, smooth_val=2, rand_dir=True, fill_empty=True):
         """
