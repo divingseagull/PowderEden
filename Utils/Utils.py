@@ -1,3 +1,7 @@
+from pathfinding.core.grid import Grid
+from pathfinding.finder.bi_a_star import BiAStarFinder
+
+
 def recursiveLookup(k, d, t=None):
     """
     list 및 dict 가 여러번 중첩되어 있는 object 에서 key 및 value 의 type 을 통해 value 를 찾는 함수
@@ -30,6 +34,7 @@ def recursiveLookup(k, d, t=None):
 
     return None
 
+
 def calc(a, b, mode): 
     """
     mode에 따라 사칙연산된 값을 반환
@@ -51,3 +56,30 @@ def calc(a, b, mode):
     }
 
     return calcDict[mode](a, b)
+
+
+def path_finding(map_instance, obstacle_type, start, end):
+    """
+    :requirements: pathfinding
+
+    :param map_instance: Map 인스턴스
+    :param obstacle_type: 장애물 타입 (예를 들어 바다 등...)
+    :param start: 출발지 xy 좌표 = (x, y)
+    :param end: 목적지 xy 좌표 = (x, y)
+    """
+
+    mb = map_instance.border
+    mi = map_instance.map_index
+
+    # 맵 그리드를 1로 초기화
+    map_data = [[1 for col in range(mb[0])] for row in range(mb[1])]
+
+    # 장애물 좌표에서 1을 0으로 교체
+    for xy in mi:
+        if mi(xy)["Type"] in obstacle_type:
+            map_data[xy[1]][xy[0]] = 0
+
+    grid = Grid(matrix=map_data)
+    finder = BiAStarFinder()
+    path, runs = finder.find_path(start, end, grid)
+    return path
