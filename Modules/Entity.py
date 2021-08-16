@@ -6,6 +6,7 @@ from Modules.Map import Map
 
 from .Utils.Errors import *
 
+
 class Entity:
     """
     모든 개체의 부모 클래스
@@ -65,7 +66,7 @@ class Entity:
         if self.mobilityPoint == 0: raise MobilityPointZeroError("can't move this entity. mobility point is 0")
         
         (x, y) = self.location
-        (bx, by) = map.border
+        (bx, by) = self.map.map_border
         mp = self.mobilityPoint
         
         # 이동력이 충분한지 확인
@@ -88,13 +89,14 @@ class Entity:
         self.destroyed = True
         self.__del__()
 
+
 class Building(Entity):
     """
     모든 건물의 부모 클래스, Entity 클래스의 자식
     """
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
+        super().__init__(owner, mapInstance, shape, x, y, name)
 
         self.mobilityPoint = 0
         self.defensePoint: int
@@ -105,28 +107,32 @@ class Building(Entity):
         현재 위치에 건물을 건설합니다
         """
         self.location = (x, y)
-        self.map.map_add_obj(self)
+        self.map.obj_add(self)
+
 
 class ResourceMine(Building):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
+        super().__init__(owner, mapInstance, shape, x, y, name)
 
         self.resourceOutputMultiplier = 1
         self.defensePoint = 0
-        
+
+
 class Shipyard(Building):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
+        super().__init__(owner, mapInstance, shape, x, y, name)
 
         self.unitSpawner  = True
         self.defensePoint = 0
-        
+
+
 class Ship(Entity):
     """
     모든 함선의 부모 클래스, Entity 클래스의 자식
     """
-    def __init__(self):
-        super().__init__()
+
+    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
+        super().__init__(owner, mapInstance, shape, x, y, name)
 
     # 정찰함   4    iron  1  oil   3    hp  0 att
     # 호위함   15   iron  5  oil   10   hp  1 att
@@ -135,9 +141,10 @@ class Ship(Entity):
     # 전함     960  iron  20 exot  270  hp  125 att
     # 우주모함 3840 iron  80 exot  1100 hp  600 att
 
+
 class Scout(Ship):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
+        super().__init__(owner, mapInstance, shape, x, y, name)
         
         self.defensePoint  = 3
         self.mobilityPoint = 3
@@ -147,9 +154,10 @@ class Scout(Ship):
             "Oil":  1
         } 
 
+
 class Frigate(Ship):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
+        super().__init__(owner, mapInstance, shape, x, y, name)
 
         self.defensePoint  = 10
         self.mobilityPoint = 3
@@ -159,9 +167,10 @@ class Frigate(Ship):
             "Oil":  5
         }
 
+
 class Destroyer(Ship):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
+        super().__init__(owner, mapInstance, shape, x, y, name)
 
         self.defensePoint  = 30
         self.mobilityPoint = 2
@@ -171,9 +180,10 @@ class Destroyer(Ship):
             "Oil":  20
         }
 
+
 class Cruiser(Ship):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
+        super().__init__(owner, mapInstance, shape, x, y, name)
 
         self.defensePoint  = 90
         self.mobilityPoint = 2
@@ -183,9 +193,10 @@ class Cruiser(Ship):
             "Exot": 5
         }
 
+
 class Battleship(Ship):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
+        super().__init__(owner, mapInstance, shape, x, y, name)
 
         self.defensePoint  = 270
         self.mobilityPoint = 1
@@ -195,9 +206,10 @@ class Battleship(Ship):
             "Exot": 20
         }
 
-class Carrier(Ship): 
-    def __init__(self):
-        super().__init__()
+
+class Carrier(Ship):
+    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
+        super().__init__(owner, mapInstance, shape, x, y, name)
 
         self.defensePoint  = 1100
         self.mobilityPoint = 1
