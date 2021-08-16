@@ -283,14 +283,14 @@ class Map:
 
     def obj_add(self, obj, xy=None):
         """
-        obj를 map_index에 추가하기
-        :xy: (x, y)가 있다면, 그에 해당하는 타일에 obj를 추가함
+        :param obj: obj를 map_index에 추가하기
+        :param xy: (x, y)가 있다면, 그에 해당하는 타일에 obj를 추가함
         """
 
         placs = self.map_index[xy or obj.location]["Players"]
 
         if obj.owner not in placs:
-            placs[obj.owner] = {}
+            placs[obj.owner] = dict()
 
         placs[obj.owner][obj.entityBase].update({
             obj.uuid: obj.profile

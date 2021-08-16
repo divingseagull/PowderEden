@@ -56,6 +56,14 @@ class Entity:
         self.map.obj_del(self)
         print(f'{self.name}이 파괴되었습니다!')
 
+    def deploy(self, xy) -> None:
+        """
+        xy: (x, y)에 개체를 배치합니다
+        """
+
+        self.location = (xy[0], xy[1])
+        self.map.obj_add(self)
+
     def move(self, dxy=None, pxy=None):
         """
         dxy: 현재 위치 기준 이동 거리.
@@ -111,32 +119,25 @@ class Building(Entity):
     모든 건물의 부모 클래스, Entity 클래스의 자식
     """
 
-    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
-        super().__init__(owner, mapInstance, shape, x, y, name)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.mobilityPoint = 0
         self.defensePoint: int
         self.firepower:   int
-    
-    def build(self, x, y) -> None:
-        """
-        현재 위치에 건물을 건설합니다
-        """
-        self.location = (x, y)
-        self.map.obj_add(self)
 
 
 class ResourceMine(Building):
-    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
-        super().__init__(owner, mapInstance, shape, x, y, name)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.resourceOutputMultiplier = 1
         self.defensePoint = 0
 
 
 class Shipyard(Building):
-    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
-        super().__init__(owner, mapInstance, shape, x, y, name)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.unitSpawner  = True
         self.defensePoint = 0
@@ -154,8 +155,8 @@ class Ship(Entity):
     우주모함 3840 iron  80 exot  1100 hp  600 att
     """
 
-    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
-        super().__init__(owner, mapInstance, shape, x, y, name)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.trace_xy = tuple()
         self.trace_entity: Entity = None
@@ -209,8 +210,8 @@ class Ship(Entity):
 
 
 class Scout(Ship):
-    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
-        super().__init__(owner, mapInstance, shape, x, y, name)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         
         self.defensePoint  = 3
         self.mobilityPoint = 3
@@ -218,12 +219,12 @@ class Scout(Ship):
         self.cost = {
             "Iron": 4,
             "Oil":  1
-        } 
+        }
 
 
 class Frigate(Ship):
-    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
-        super().__init__(owner, mapInstance, shape, x, y, name)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.defensePoint  = 10
         self.mobilityPoint = 3
@@ -235,8 +236,8 @@ class Frigate(Ship):
 
 
 class Destroyer(Ship):
-    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
-        super().__init__(owner, mapInstance, shape, x, y, name)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.defensePoint  = 30
         self.mobilityPoint = 2
@@ -248,8 +249,8 @@ class Destroyer(Ship):
 
 
 class Cruiser(Ship):
-    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
-        super().__init__(owner, mapInstance, shape, x, y, name)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.defensePoint  = 90
         self.mobilityPoint = 2
@@ -261,8 +262,8 @@ class Cruiser(Ship):
 
 
 class Battleship(Ship):
-    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
-        super().__init__(owner, mapInstance, shape, x, y, name)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.defensePoint  = 270
         self.mobilityPoint = 1
@@ -274,8 +275,8 @@ class Battleship(Ship):
 
 
 class Carrier(Ship):
-    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
-        super().__init__(owner, mapInstance, shape, x, y, name)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
 
         self.defensePoint  = 1100
         self.mobilityPoint = 1
