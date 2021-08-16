@@ -3,6 +3,8 @@ from PIL import Image
 
 def make_map_image(size, background, pixels: dict):
     """
+    :requirements: pillow
+
     args 인자에서 색상, 위치를 받아서 이미지를 생성함
 
     size = (x, y)

@@ -2,9 +2,9 @@ from typing import Union
 
 import random
 
-from Utils.JSONUtils import JSONUtils
-from Utils.Errors import *
-from Utils.Utils import *
+from .Utils.JSONUtils import JSONUtils
+from .Utils.Errors import *
+from .Utils.Utils import *
 
 # TODO: map_index를 확장하기
 # 1. 모든 (x, y)를 키로 하는 값을 생성

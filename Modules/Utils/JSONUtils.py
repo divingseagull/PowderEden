@@ -1,7 +1,7 @@
 from typing import Union
 import json
 
-from Utils.Errors import *
+from .Errors import *
 
 class JSONUtils:
     def load(filePath:str) -> Union[dict, list]:

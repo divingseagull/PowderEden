@@ -5,8 +5,8 @@ from Modules.Map import Tile
 
 from Modules.Entity import *
 
-from Utils.Errors import *
-from Utils.Utils import *
+from .Utils.Errors import *
+from .Utils.Utils import *
 
 
 class Battle(commands.Cog):

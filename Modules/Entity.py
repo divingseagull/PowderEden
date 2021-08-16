@@ -4,7 +4,7 @@ import uuid
 from typing import Optional
 from Modules.Map import Map
 
-from Utils.Errors import *
+from .Utils.Errors import *
 
 class Entity:
     """

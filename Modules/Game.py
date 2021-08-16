@@ -7,7 +7,7 @@ import json
 import os
 import shutil
 
-from Utils.JSONUtils import *
+from .Utils.JSONUtils import *
 from . import Main
 
 class Bot(commands.Cog):
