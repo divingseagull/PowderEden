@@ -277,7 +277,7 @@ class Map:
         if obj.owner not in placs:
             placs[obj.owner] = dict()
 
-        placs[obj.owner][obj.entityBase].update({
+        placs[obj.owner]["Entity"].update({
             obj.uuid: obj.profile
         })
     
@@ -286,7 +286,7 @@ class Map:
         obj를 map_index에서 삭제하기
         """
 
-        del self.map_index[obj.location]["Players"][obj.owner][obj.entityBase][obj.uuid]
+        del self.map_index[obj.location]["Players"][obj.owner]["Entity"][obj.uuid]
 
     def obj_mov(self, obj, xy):
         """

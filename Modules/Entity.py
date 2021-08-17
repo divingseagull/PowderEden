@@ -39,7 +39,6 @@ class Entity:
                 "entity": self, # 개체 인스턴스
                 "entityOwner": self.owner, # 개체 소유자
                 "entityType": type(self).__name__, # 개체 클래스 이름
-                "entityBase": self.__class__.__bases__[0].__name__ # 개체 부모 클래스 이름
             }
         }
         
