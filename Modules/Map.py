@@ -177,14 +177,16 @@ class Map:
 
             xy_list = list(xy_set)
 
+        xy_set = set(xy_list)
         # 부드럽게 만들기 : fill_empty=True 에서 작동
         if fill_empty:
+
             # 배경에서 고립된 작은 조각들이 얼마나 고립되었는지 기록
             empt_dict = dict()
-            for xy in xy_list:
+            for xy in xy_set:
                 for i in range(8):
                     empt_pix = rand_direction(xy, 1, i)
-                    if empt_pix in xy_list:
+                    if empt_pix in xy_set:
                         continue
                     else:
                         if empt_pix in empt_dict:
@@ -195,12 +197,12 @@ class Map:
             # 배경에서 고립된 작은 조각 제거
             for xy in empt_dict:
                 if empt_dict[xy] >= smooth_val:
-                    xy_list.append(xy)
+                    xy_set.add(xy)
 
         r_t_set = set()
 
         # 배경 좌표가 맵 크기를 벗어나지 않는지 확인
-        for xy in xy_list:
+        for xy in xy_set:
             xy: tuple
 
             if sx <= xy[0]:
