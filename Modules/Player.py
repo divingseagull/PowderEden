@@ -2,6 +2,7 @@ from discord.ext import commands
 from discord.ext.commands import Context
 from discord import Embed
 
+
 class Player(commands.Cog):
     def __init__(self, client):
         self.client: commands.Bot = client
@@ -28,6 +29,7 @@ class Player(commands.Cog):
     @unit.command(name="생산")
     async def productUnit(self, ctx: Context):
         pass
+
 
 def setup(client):
     client.add_cog(Player(client))

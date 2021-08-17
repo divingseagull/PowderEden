@@ -10,6 +10,7 @@ import shutil
 from .Utils.JSONUtils import *
 from . import Main
 
+
 class Bot(commands.Cog):
     def __init__(self, client):
         self.client: commands.Bot = client
@@ -18,7 +19,7 @@ class Bot(commands.Cog):
         if os.path.exists(f"{Main.path}/Data/Guild/{guildID}"):
             shutil.rmtree(f"{Main.path}/Data/Guild/{guildID}", True)
 
-        shutil.copytree(f"{Main.path}/Data/Base", f"{Main.path}/Data/Guild") # FIXME
+        shutil.copytree(f"{Main.path}/Data/Base", f"{Main.path}/Data/Guild")  # FIXME
         os.rename(f"{Main.path}/Data/Guild/Base", f"{Main.path}/Data/Guild/{guildID}")
 
     @commands.command(name="게임시작")
@@ -38,10 +39,10 @@ class Bot(commands.Cog):
             # with open(f"{Main.path}/Data/Guild/{guild.id}/Config.json", 'w') as configFile:
             with open(f"{Main.path}/Data/Guild/TestGuild/Config.json", 'w') as configFile:
                 config: dict = {
-                    "MapSize": [0, 0], # SizeX, SizeY FIXME: Map size cannot be (0, 0).
-                    "Players": { },
-                    "Rule":{
-                        "Timer": 24 # (H)
+                    "MapSize": [0, 0],  # SizeX, SizeY FIXME: Map size cannot be (0, 0).
+                    "Players": {},
+                    "Rule": {
+                        "Timer": 24  # (H)
                     }
                 }
                 for p in players:
@@ -50,8 +51,8 @@ class Bot(commands.Cog):
                             f"Player{players.index(p)}": {
                                 "ID": p.id,
                                 "EndedTurn": False,
-                                "Resources": { # FIXME
-                                    "Oil": 0, 
+                                "Resources": {  # FIXME
+                                    "Oil": 0,
                                     "Iron": 0,
                                     "Exot": 0
                                 }
@@ -59,6 +60,7 @@ class Bot(commands.Cog):
                         }
                     )
                 json.dump(config, configFile, indent=4)
+
 
 def setup(client):
     client.add_cog(Bot(client))

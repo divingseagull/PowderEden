@@ -13,7 +13,7 @@ class Battle(commands.Cog):
     def __init__(self, client):
         self.client: commands.Bot = client
         # 전투를 진행할 타일 목록
-        self.battleQueue = [ ]
+        self.battleQueue = []
         # 피해 우선순위
         self.damagePriority = [
             "SCOUT",
@@ -21,7 +21,7 @@ class Battle(commands.Cog):
             "DESTROYER",
             "CRUISER",
             "BATTLESHIP"
-        ] 
+        ]
 
     def calculateBase(self, baseDict: dict, goalDict: dict, mode=None):
         """
@@ -65,7 +65,7 @@ class Battle(commands.Cog):
         :param mode: 연산 적용 후 내보낼 mode, None일 경우 dict로 내보냄, "sum"일 경우 합산한 것을 내보냄
         :return: 적용된 연산을 반환
         """
-        
+
         resultDict: dict = {}
         sumFloat: float = 0
 
@@ -101,7 +101,7 @@ class Battle(commands.Cog):
             }
 
         return self.calculateBase(shipDict, ships, 'sum')
-    
+
     def calculateDefensePoint(self, ships: dict, buildings: dict) -> int:
         # FIXME: SHIP_INFO
         """
@@ -133,21 +133,22 @@ class Battle(commands.Cog):
         if (x or y) not in self.battleQueue:
             raise InvalidTileError("can't find tile from battle queue")
 
-        tile  = Tile(x, y)
+        tile = Tile(x, y)
         units = tile.getUnits()
 
         damageResult: int = 0
         battleResult = self.calculateFirePower(units["Home"]) - \
                        self.calculateDefensePoint(units["Away"], tile.getBuildings()["Defense"])
-        
+
         if battleResult < 0: Tile.replaceOwner()
 
         for shipType in self.damagePriority:
-            if units["Away"][shipType] == 0: continue # if ship count is 0: continue
+            if units["Away"][shipType] == 0: continue  # if ship count is 0: continue
             # test code                           dp  - units count
             damageResult += math.floor(
                 self.calculateDefensePoint(units["Home"], tile.getBuildings()["Defense"]) - \
                 self.calculateDefensePoint(units["Away"][shipType]) / units["Away"][shipType])
+
 
 def setup(client):
     client.add_cog(Battle(client))

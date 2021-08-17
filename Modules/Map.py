@@ -6,6 +6,7 @@ from .Utils.JSONUtils import JSONUtils
 from .Utils.Errors import *
 from .Utils.Utils import *
 
+
 # TODO: map_index를 확장하기
 # 1. 모든 (x, y)를 키로 하는 값을 생성
 # 2. 천연자원 추가
@@ -19,10 +20,10 @@ class Map:
 
         # 맵의 저장 경로
         self.dump_path = "Data/Map.json"
-        
+
         # 땅의 모양
         self.groundShape = groundShape
-        
+
         # 바다(배경) 의 모양
         self.backgroundShape = backgroundShape
 
@@ -43,22 +44,22 @@ class Map:
         for kx in range(xy[0]):
             for ky in range(xy[1]):
                 self.map_index[(kx, ky)] = {
-                    "Owner": "", # 소유자
-                    "Players": { # 현재 타일에 있는 Entity의 주인들
-                        "nature": { # 자연적으로 생성된 개체 (주인이 없는 개체들/중립 몹?)
+                    "Owner": "",  # 소유자
+                    "Players": {  # 현재 타일에 있는 Entity의 주인들
+                        "nature": {  # 자연적으로 생성된 개체 (주인이 없는 개체들/중립 몹?)
                             "Entity": {
                                 # (x, y)에 있는 개체
                             }
                         }
                     },
 
-                    "Type": set(), # 타일의 타입 (땅/바다/...다른 여러가지 속성들...)
+                    "Type": set(),  # 타일의 타입 (땅/바다/...다른 여러가지 속성들...)
 
-                    "Shape": "", # 타일의 모양
+                    "Shape": "",  # 타일의 모양
 
-                    "Resource": { # (x, y)에 있는 천연/합성 자원
+                    "Resource": {  # (x, y)에 있는 천연/합성 자원
                         "Iron": 0,
-                        "Oil":  0,
+                        "Oil": 0,
                         "Exot": 0
                     }
                 }
@@ -68,7 +69,7 @@ class Map:
         for xy in xy_tuple_list:
             self.map_index[xy]["Shape"] = self.backgroundShape
             self.map_index[xy]["Type"].add("sea")
-    
+
     def make_chunks(self, divergence=0.72, smooth_val=2, rand_dir=True, fill_empty=True):
         """
         바다(배경) 속성을 가진 타일의 좌표를 생성함
@@ -126,7 +127,7 @@ class Map:
             for xy in xy_list:
 
                 xy_set.add((xy[0], xy[1]))
-                
+
                 # 배경 1단위 주위에 배경 1단위를 무작위로 배치 - 상하좌우
                 if bool(random.getrandbits(1)):
                     if (xy[0] + 1, xy[1]) in xy_set \
@@ -243,12 +244,12 @@ class Map:
 
         self.map_index[xy].update(tileObj)
         return self.map_index
-    
+
     def map_read(self):
         """
         map_index를 JSON파일에서 읽기
         """
-        
+
         try:
             self.map_index = JSONUtils.load(self.dump_path)
             return True
@@ -259,7 +260,7 @@ class Map:
         """
         map_index를 JSON파일로 쓰기
         """
-        
+
         try:
             JSONUtils.write(self.dump_path, self.map_index)
             return True
@@ -280,7 +281,7 @@ class Map:
         placs[obj.owner]["Entity"].update({
             obj.uuid: obj.profile
         })
-    
+
     def obj_del(self, obj):
         """
         obj를 map_index에서 삭제하기
@@ -296,14 +297,14 @@ class Map:
         self.obj_del(obj)
         self.obj_add(obj, xy)
         obj.location = xy
-       
+
     def get_owner(self, xy):
         """
         :xy: (x, y)에 해당하는 타일의 소유자를 반환함
         """
 
         return self.map_index[xy]["Owner"]
-    
+
     def get_entity(self, xy, owner=None):
         """
         :xy: (x, y)에 해당하는 타일의 개체들을 반환함
@@ -314,21 +315,21 @@ class Map:
             return self.map_index[xy]["Players"][owner]
         else:
             return self.map_index[xy]["Players"]
-    
+
     def get_building(self, xy, owner):
         """
         :xy: (x, y)에 해당하는 타일에서 owner의 건물을 반환함
         """
 
         return self.map_index[xy]["Players"][owner]["Building"]
-    
+
     def get_ship(self, xy, owner):
         """
         :xy: (x, y)에 해당하는 타일에서 owner의 함선을 반환함
         """
 
         return self.map_index[xy]["Players"][owner]["Ship"]
-    
+
     def get_type(self, xy):
         """
         :xy: (x, y)에 해당하는 타일의 타입을 반환함
@@ -349,7 +350,7 @@ class Map:
         """
 
         return self.map_index[xy]["Resource"]
-    
+
     def replace_owner(self, xy, new_owner):
         """
         :xy: (x, y)에 해당하는 타일의 소유자를 변경함
@@ -358,16 +359,15 @@ class Map:
         self.map_index[xy]["Owner"] = new_owner
 
 
-
 class Tile(Map):
     _map: Union[dict, list] = None
 
-    def __init__(self, x: int, y: int) -> None: 
+    def __init__(self, x: int, y: int) -> None:
         super().__init__()
         self.x: int = x
         self.y: int = y
 
-        for i in range(0, self.x+1):
+        for i in range(0, self.x + 1):
             for j in range(0, self.y):
                 pass
 
@@ -375,7 +375,7 @@ class Tile(Map):
         tmpMap = self.getInfo()
         tmpMap.update(object)
         JSONUtils.write("Data/Map.json", tmpMap)
-        
+
     def getInfo(self) -> dict:
         try:
             self._map = JSONUtils.load("Data/Map.json")
@@ -390,7 +390,7 @@ class Tile(Map):
 
     def getUnits(self) -> dict:
         # FIXME: getInfo()["Entity"]
-        return { 
+        return {
             "Home": self.getInfo()["Entity"],
             "Away": self.getInfo()["Entity"]
         }
@@ -411,9 +411,9 @@ class Tile(Map):
 
     def deployUnits(self) -> None:
         pass
-    
+
     def buildBuildings(self, buildingName: str) -> None:
         mapData: dict = self.getInfo()
         mapData["Players"][mapData["Owner"]]["Entity"].update({
-            
+
         })

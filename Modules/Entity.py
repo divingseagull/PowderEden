@@ -12,19 +12,19 @@ class Entity:
 
     Map클래스의 인스턴스를 mapInstance로 받는다
     """
-    
+
     def __init__(self, owner, mapInstance, xy, shape, name=None):
-        self.uuid:     str = str(uuid.uuid4())
-        self.owner:    str = owner
-        self.map:      Map = mapInstance
+        self.uuid: str = str(uuid.uuid4())
+        self.owner: str = owner
+        self.map: Map = mapInstance
         self.location: tuple = xy
-        self.shape:    str = shape
+        self.shape: str = shape
         self.mobilityPoint: int = 0
-        self.defensePoint:  int = 0
-        self.firepower:     int = 0
+        self.defensePoint: int = 0
+        self.firepower: int = 0
         self.cost: dict = {
             "Iron": 0,
-            "Oil":  0,
+            "Oil": 0,
             "Exot": 0
         }
         self.destroyed: bool = False
@@ -36,12 +36,12 @@ class Entity:
         # 개체의 프로필
         self.profile = {
             self.uuid: {
-                "entity": self, # 개체 인스턴스
-                "entityOwner": self.owner, # 개체 소유자
-                "entityType": type(self).__name__, # 개체 클래스 이름
+                "entity": self,  # 개체 인스턴스
+                "entityOwner": self.owner,  # 개체 소유자
+                "entityType": type(self).__name__,  # 개체 클래스 이름
             }
         }
-        
+
     # defensePoint가 0이하인 값으로 할당될 경우 파괴
     def __setattr__(self, name, value):
         if name == 'defensePoint':
@@ -72,11 +72,11 @@ class Entity:
         # FIXME: 불필요한 에러?
         if self.mobilityPoint == 0:
             raise MobilityPointZeroError("can't move this entity. mobility point is 0")
-        
+
         (x, y) = self.location
         (bx, by) = self.map.map_border
         mp = self.mobilityPoint
-        
+
         # 이동력이 충분한지 확인
 
         if dxy:
@@ -95,14 +95,14 @@ class Entity:
 
         else:
             raise Exception("이동할 좌표가 존재하지 않습니다.")
-        
+
         # 맵 경계를 벗어나는지 확인
         if not 0 <= postX < bx or not 0 <= postY < by:
             raise MapBorderOutError()
-        
+
         # 맵에서 이동
         self.map.obj_mov(self, (postX, postY))
-    
+
     def destroy(self) -> None:
         """
         유닛을 맵에서 제거합니다
@@ -122,7 +122,7 @@ class Building(Entity):
 
         self.mobilityPoint = 0
         self.defensePoint: int
-        self.firepower:   int
+        self.firepower: int
 
 
 class ResourceMine(Building):
@@ -137,7 +137,7 @@ class Shipyard(Building):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.unitSpawner  = True
+        self.unitSpawner = True
         self.defensePoint = 0
 
 
@@ -211,13 +211,13 @@ class Ship(Entity):
 class Scout(Ship):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        
-        self.defensePoint  = 3
+
+        self.defensePoint = 3
         self.mobilityPoint = 3
-        self.firepower     = 0
+        self.firepower = 0
         self.cost = {
             "Iron": 4,
-            "Oil":  1
+            "Oil": 1
         }
 
 
@@ -225,12 +225,12 @@ class Frigate(Ship):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.defensePoint  = 10
+        self.defensePoint = 10
         self.mobilityPoint = 3
-        self.firepower     = 1,
+        self.firepower = 1,
         self.cost = {
             "Iron": 15,
-            "Oil":  5
+            "Oil": 5
         }
 
 
@@ -238,12 +238,12 @@ class Destroyer(Ship):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.defensePoint  = 30
+        self.defensePoint = 30
         self.mobilityPoint = 2
-        self.firepower     = 5
+        self.firepower = 5
         self.cost = {
             "Iron": 60,
-            "Oil":  20
+            "Oil": 20
         }
 
 
@@ -251,9 +251,9 @@ class Cruiser(Ship):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.defensePoint  = 90
+        self.defensePoint = 90
         self.mobilityPoint = 2
-        self.firepower     = 25
+        self.firepower = 25
         self.cost = {
             "Iron": 240,
             "Exot": 5
@@ -264,9 +264,9 @@ class Battleship(Ship):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.defensePoint  = 270
+        self.defensePoint = 270
         self.mobilityPoint = 1
-        self.firepower     = 125
+        self.firepower = 125
         self.cost = {
             "Iron": 960,
             "Exot": 20
@@ -277,9 +277,9 @@ class Carrier(Ship):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.defensePoint  = 1100
+        self.defensePoint = 1100
         self.mobilityPoint = 1
-        self.firepower     = 600
+        self.firepower = 600
         self.cost = {
             "Iron": 3840,
             "Exot": 80

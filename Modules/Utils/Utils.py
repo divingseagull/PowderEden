@@ -35,7 +35,7 @@ def recursiveLookup(k, d, t=None):
     return None
 
 
-def calc(a, b, mode): 
+def calc(a, b, mode):
     """
     mode에 따라 사칙연산된 값을 반환
     """
@@ -47,7 +47,7 @@ def calc(a, b, mode):
     def multipy_cal(a, b): return a * b
 
     def divide_cal(a, b): return a / b
-    
+
     calcDict = {
         'plus': plus_cal,
         'minus': minus_cal,
