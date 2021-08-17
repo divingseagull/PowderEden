@@ -13,12 +13,12 @@ class Entity:
     Map클래스의 인스턴스를 mapInstance로 받는다
     """
     
-    def __init__(self, owner, mapInstance, shape, x, y, name=None):
+    def __init__(self, owner, mapInstance, xy, shape, name=None):
         self.uuid:     str = str(uuid.uuid4())
         self.owner:    str = owner
         self.map:      Map = mapInstance
+        self.location: tuple = xy
         self.shape:    str = shape
-        self.location: tuple = (x, y)
         self.mobilityPoint: int = 0
         self.defensePoint:  int = 0
         self.firepower:     int = 0
@@ -158,7 +158,7 @@ class Ship(Entity):
         super().__init__(**kwargs)
 
         self.trace_xy = tuple()
-        self.trace_entity: Entity = None
+        self.trace_entity = None
         self.trace_path = list()
         self.obstacle_type = ["sea"]
 
@@ -172,7 +172,8 @@ class Ship(Entity):
 
         if type(target) == tuple and len(target) == 2:
             self.trace_xy = target
-        else:
+
+        elif target.location:
             self.trace_entity = target
 
     def trace(self):
