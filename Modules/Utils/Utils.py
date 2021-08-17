@@ -90,5 +90,5 @@ def path_finding(map_instance, obstacle_type: list, start, end):
 
     grid = Grid(matrix=map_data)
     finder = BiAStarFinder()
-    path, runs = finder.find_path(start, end, grid)
+    path, runs = finder.find_path(grid.node(start[0], start[1]), grid.node(end[0], end[1]), grid)
     return path
