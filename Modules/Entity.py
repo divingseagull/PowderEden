@@ -1,6 +1,5 @@
 import uuid
 
-from typing import Optional
 from Modules.Map import Map
 
 from .Utils.Errors import *
@@ -14,7 +13,7 @@ class Entity:
     Map클래스의 인스턴스를 mapInstance로 받는다
     """
     
-    def __init__(self, owner, mapInstance, shape, x, y, name: Optional[str]):
+    def __init__(self, owner, mapInstance, shape, x, y, name=None):
         self.uuid:     str = str(uuid.uuid4())
         self.owner:    str = owner
         self.map:      Map = mapInstance
