@@ -251,7 +251,7 @@ class Map:
         """
 
         try:
-            self.map_index = JSONUtils.load(self.dump_path)
+            self.map_index = JSONUtils().load(self.dump_path)
             return True
         except:
             return False
@@ -262,7 +262,7 @@ class Map:
         """
 
         try:
-            JSONUtils.write(self.dump_path, self.map_index)
+            JSONUtils().write(self.dump_path, self.map_index)
             return True
         except:
             return False
@@ -374,11 +374,11 @@ class Tile(Map):
     def _updateMap(self, object: Union[dict, list]) -> None:
         tmpMap = self.getInfo()
         tmpMap.update(object)
-        JSONUtils.write("Data/Map.json", tmpMap)
+        JSONUtils().write("Data/Map.json", tmpMap)
 
     def getInfo(self) -> dict:
         try:
-            self._map = JSONUtils.load("Data/Map.json")
+            self._map = JSONUtils().load("Data/Map.json")
             self._map[self.x][self.y]
         except IndexError:
             raise InvalidTileError("tile out of range")
