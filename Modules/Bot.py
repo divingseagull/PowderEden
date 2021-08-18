@@ -7,7 +7,7 @@ import json
 import os
 import shutil
 
-import Main
+from . import Main
 
 
 class Game(commands.Cog):

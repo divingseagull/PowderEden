@@ -70,16 +70,18 @@ class Map:
             self.map_index[xy]["Shape"] = self.backgroundShape
             self.map_index[xy]["Type"].add("sea")
 
-    def make_chunks(self, divergence=0.72, smooth_val=2, rand_dir=True, fill_empty=True):
+    def make_chunks(self, divergence=0.72, smooth_val=2, retry_val=1, rand_dir=True, fill_empty=True):
         """
         바다(배경) 속성을 가진 타일의 좌표를 생성함
 
         :divergence: 분산도(값이 커질 수록 땅이 조각조각 남)
 
-        적절한 값 :
+        잠정적인 최대 크기:
         (80 x 80, 0.5)
         (100 x 100, 0.8)
-        (200 x 200, 1)
+
+        넓고 보기 좋지만 시간이 많이 걸림:
+        (200 x 200, 1)  - 40초 ~ 1분 정도
         """
 
         def rand_direction(xy, i, ind):
@@ -104,6 +106,33 @@ class Map:
             ]
 
             return tt[ind]
+
+        def xy_trim(xy_set):
+            """
+            맵 좌표 인덱스 정리 함수
+
+            :xy_set: (x, y)좌표 집합
+            """
+
+            return_set = set()
+
+            for xy in xy_set:
+
+                if sx <= xy[0]:
+                    xy = (xy[0] - sx, xy[1])
+
+                if sy <= xy[1]:
+                    xy = (xy[0], xy[1] - sy)
+
+                if -sx <= xy[0] < 0:
+                    xy = (xy[0] + sx, xy[1])
+
+                if -sy <= xy[1] < 0:
+                    xy = (xy[0], xy[1] + sy)
+
+                return_set.add(xy)
+
+            return return_set
 
         sx = self.map_border[0]
         sy = self.map_border[1]
@@ -175,49 +204,33 @@ class Map:
 
             xy_list = list(xy_set)
 
-        xy_set = set(xy_list)
+        xy_set = xy_trim(set(xy_list))
+
         # 부드럽게 만들기 : fill_empty=True 에서 작동
         if fill_empty:
 
-            # 배경에서 고립된 작은 조각들이 얼마나 고립되었는지 기록
-            empt_dict = dict()
-            for xy in xy_set:
-                for i in range(8):
-                    empt_pix = rand_direction(xy, 1, i)
-                    if empt_pix in xy_set:
-                        continue
-                    else:
-                        if empt_pix in empt_dict:
-                            empt_dict[empt_pix] += 1
+            # 반복 횟수
+            for _ in range(retry_val):
+
+                # 배경에서 고립된 작은 조각들이 얼마나 고립되었는지 기록
+                empt_dict = dict()
+                for xy in xy_set:
+                    for i in range(8):
+                        empt_pix = rand_direction(xy, 1, i)
+                        if empt_pix in xy_set:
+                            continue
                         else:
-                            empt_dict[empt_pix] = 1
+                            if empt_pix in empt_dict:
+                                empt_dict[empt_pix] += 1
+                            else:
+                                empt_dict[empt_pix] = 1
 
-            # 배경에서 고립된 작은 조각 제거
-            for xy in empt_dict:
-                if empt_dict[xy] >= smooth_val:
-                    xy_set.add(xy)
+                # 배경에서 고립된 작은 조각 제거
+                for xy in empt_dict:
+                    if empt_dict[xy] >= smooth_val:
+                        xy_set.add(xy)
 
-        r_t_set = set()
-
-        # 배경 좌표가 맵 크기를 벗어나지 않는지 확인
-        for xy in xy_set:
-            xy: tuple
-
-            if sx <= xy[0]:
-                xy = (xy[0] - sx, xy[1])
-
-            if sy <= xy[1]:
-                xy = (xy[0], xy[1] - sy)
-
-            if -sx <= xy[0] < 0:
-                xy = (xy[0] + sx, xy[1])
-
-            if -sy <= xy[1] < 0:
-                xy = (xy[0], xy[1] + sy)
-
-            r_t_set.add(xy)
-
-        return list(r_t_set)
+        return list(xy_trim(xy_set))
 
     def map_view(self):
         """
